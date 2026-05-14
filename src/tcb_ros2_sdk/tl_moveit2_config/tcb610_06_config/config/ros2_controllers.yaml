@@ -1,0 +1,26 @@
+# This config file is used by ros2_control
+controller_manager:
+  ros__parameters:
+    update_rate: 100  # Hz
+
+    tcb610_06_group_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+tcb610_06_group_controller:
+  ros__parameters:
+    joints:
+      - tl_robot_joint1
+      - tl_robot_joint2
+      - tl_robot_joint3
+      - tl_robot_joint4
+      - tl_robot_joint5
+      - tl_robot_joint6
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity

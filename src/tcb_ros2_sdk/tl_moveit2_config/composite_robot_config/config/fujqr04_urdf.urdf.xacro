@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="fujqr04_urdf">
+    <xacro:arg name="initial_positions_file" default="initial_positions.yaml" />
+
+    <!-- Import fujqr04_urdf urdf file -->
+    <xacro:include filename="$(find tl_robot_description)/urdf/fujqr04_urdf.urdf" />
+
+    <!-- Import control_xacro -->
+    <xacro:include filename="fujqr04_urdf.ros2_control.xacro" />
+
+
+    <xacro:fujqr04_urdf_ros2_control name="TLHardware" initial_positions_file="$(arg initial_positions_file)"/>
+
+</robot>

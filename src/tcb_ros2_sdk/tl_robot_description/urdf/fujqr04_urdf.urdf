@@ -1,0 +1,1803 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-1-g15f4949  Build Version: 1.6.7594.29634
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="fujqr04_urdf">
+      <mujoco>
+    <compiler meshdir="package://tl_robot_description/meshes/composite_robot" discardvisual="false"/>
+  </mujoco>
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="-0.0585192454024194 -1.67637819496746E-05 0.151552337128435"
+        rpy="0 0 0" />
+      <mass
+        value="26.647418791939" />
+      <inertia
+        ixx="0.595861553229968"
+        ixy="-5.87175946958511E-05"
+        ixz="0.00375746939189131"
+        iyy="0.608863591294001"
+        iyz="-1.57939781044652E-05"
+        izz="0.501908866217119" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="right_wheel_link">
+    <inertial>
+      <origin
+        xyz="-0.000904107370642615 0.000627773631885153 -0.00018469891110226"
+        rpy="0 0 0" />
+      <mass
+        value="0.906065331403416" />
+      <inertia
+        ixx="0.00146490832006865"
+        ixy="-2.68932350553715E-09"
+        ixz="2.66391539023402E-08"
+        iyy="0.00274396801108794"
+        iyz="-2.65212662986043E-07"
+        izz="0.00146498413434211" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/right_wheel_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/right_wheel_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="right_wheel_joint"
+    type="fixed">
+    <origin
+      xyz="0.00924308221084946 -0.163664282793204 -0.213500858738017"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="right_wheel_link" />
+    <axis
+      xyz="0 1 0" />
+  </joint>
+  <link
+    name="left_wheel_link">
+    <inertial>
+      <origin
+        xyz="-1.23989030601512E-05 -0.000627774706009075 4.48483952431022E-06"
+        rpy="0 0 0" />
+      <mass
+        value="0.906065281118617" />
+      <inertia
+        ixx="0.00146490692546974"
+        ixy="4.36963444339904E-09"
+        ixz="-2.46401910031467E-08"
+        iyy="0.00274396788517508"
+        iyz="2.65187799226424E-07"
+        izz="0.00146498540258475" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/left_wheel_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/left_wheel_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="left_wheel_joint"
+    type="fixed">
+    <origin
+      xyz="0.00924308221084946 0.163635717206786 -0.213500858738017"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="left_wheel_link" />
+    <axis
+      xyz="0 -1 0" />
+  </joint>
+  <link
+    name="r_wheel1_link">
+    <inertial>
+      <origin
+        xyz="-0.0113137247197726 -0.000218433447863375 -0.0261993099863237"
+        rpy="0 0 0" />
+      <mass
+        value="0.0428499821293494" />
+      <inertia
+        ixx="1.52834000745033E-05"
+        ixy="-3.4950707316608E-09"
+        ixz="-1.01718859528849E-06"
+        iyy="1.23944108861041E-05"
+        iyz="7.98827275350381E-11"
+        izz="1.58388917660375E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/r_wheel1_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/r_wheel1_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="r_wheel1_joint"
+    type="fixed">
+    <origin
+      xyz="0.183794709280946 -0.135014282793186 -0.203549999999998"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="r_wheel1_link" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-3.14"
+      upper="3.14"
+      effort="10"
+      velocity="10" />
+  </joint>
+  <link
+    name="right_wheel1_link">
+    <inertial>
+      <origin
+        xyz="7.80906843078633E-07 4.3178541853095E-09 -2.0320507282956E-06"
+        rpy="0 0 0" />
+      <mass
+        value="0.110487149626156" />
+      <inertia
+        ixx="4.38934678556913E-05"
+        ixy="-4.47028176514792E-11"
+        ixz="1.13193512494371E-08"
+        iyy="7.47299398015464E-05"
+        iyz="-4.56497658987084E-11"
+        izz="4.38712937378626E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/right_wheel1_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/right_wheel1_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="right_wheel1_joint"
+    type="fixed">
+    <origin
+      xyz="-0.0205 0 -0.0432"
+      rpy="0 0 0" />
+    <parent
+      link="r_wheel1_link" />
+    <child
+      link="right_wheel1_link" />
+    <axis
+      xyz="0 -1 0" />
+  </joint>
+  <link
+    name="r_wheel2_link">
+    <inertial>
+      <origin
+        xyz="-0.014027793887006 -0.000231594026883664 -0.0222607688915356"
+        rpy="0 0 0" />
+      <mass
+        value="0.0459567939136361" />
+      <inertia
+        ixx="1.95859406220218E-05"
+        ixy="8.47128518178421E-09"
+        ixz="-1.86482178866713E-06"
+        iyy="1.6680216642778E-05"
+        iyz="2.39089350752865E-09"
+        izz="2.32978369433128E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/r_wheel2_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/r_wheel2_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="r_wheel2_joint"
+    type="fixed">
+    <origin
+      xyz="-0.166205254244258 -0.135013949211622 -0.213250000000002"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="r_wheel2_link" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-3.14"
+      upper="3.14"
+      effort="10"
+      velocity="10" />
+  </joint>
+  <link
+    name="right_wheel2_link">
+    <inertial>
+      <origin
+        xyz="-1.20284292748352E-07 7.29827309697839E-12 2.90073505299082E-07"
+        rpy="0 0 0" />
+      <mass
+        value="0.0867602671682201" />
+      <inertia
+        ixx="2.5469835297065E-05"
+        ixy="1.42130721310809E-10"
+        ixz="7.40808742693022E-09"
+        iyy="3.80488317798568E-05"
+        iyz="5.89476737928406E-11"
+        izz="2.54550425639356E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/right_wheel2_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/right_wheel2_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="right_wheel2_joint"
+    type="fixed">
+    <origin
+      xyz="-0.0265 0 -0.0395"
+      rpy="0 0.00129839823615998 0" />
+    <parent
+      link="r_wheel2_link" />
+    <child
+      link="right_wheel2_link" />
+    <axis
+      xyz="0 -1 0" />
+  </joint>
+  <link
+    name="l_wheel1_link">
+    <inertial>
+      <origin
+        xyz="-0.0113137249835045 -0.000218433396062562 -0.0261993098242906"
+        rpy="0 0 0" />
+      <mass
+        value="0.0428499824901452" />
+      <inertia
+        ixx="1.52834000799942E-05"
+        ixy="-3.49504906661967E-09"
+        ixz="-1.01718864900662E-06"
+        iyy="1.23944110236126E-05"
+        iyz="7.98913017200971E-11"
+        izz="1.5838891901709E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/l_wheel1_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/l_wheel1_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="l_wheel1_joint"
+    type="fixed">
+    <origin
+      xyz="0.183794709280931 0.1349857172068 -0.203549999999998"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="l_wheel1_link" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-3.14"
+      upper="3.14"
+      effort="10"
+      velocity="10" />
+  </joint>
+  <link
+    name="left_wheel1_link">
+    <inertial>
+      <origin
+        xyz="7.80906836417294E-07 4.31786126298128E-09 -2.03205072363266E-06"
+        rpy="0 0 0" />
+      <mass
+        value="0.11048714962617" />
+      <inertia
+        ixx="4.3893467855692E-05"
+        ixy="-4.47028054565614E-11"
+        ixz="1.13193512583468E-08"
+        iyy="7.47299398015534E-05"
+        iyz="-4.564979020841E-11"
+        izz="4.38712937378724E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/left_wheel1_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/left_wheel1_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="left_wheel1_joint"
+    type="fixed">
+    <origin
+      xyz="-0.0205 0 -0.0432"
+      rpy="0 0 0" />
+    <parent
+      link="l_wheel1_link" />
+    <child
+      link="left_wheel1_link" />
+    <axis
+      xyz="0 -1 0" />
+  </joint>
+  <link
+    name="l_wheel2_link">
+    <inertial>
+      <origin
+        xyz="-0.0140277943962059 -0.000231594175131911 -0.0222607696617747"
+        rpy="0 0 0" />
+      <mass
+        value="0.0459567928027875" />
+      <inertia
+        ixx="1.95859408341884E-05"
+        ixy="8.47139771002924E-09"
+        ixz="-1.86482176681896E-06"
+        iyy="1.66799725155158E-05"
+        iyz="2.39079659159164E-09"
+        izz="2.32975929149454E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/l_wheel2_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/l_wheel2_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="l_wheel2_joint"
+    type="fixed">
+    <origin
+      xyz="-0.16620529071915 0.134985717206844 -0.213250000000002"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="l_wheel2_link" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-3.14"
+      upper="3.14"
+      effort="10"
+      velocity="10" />
+  </joint>
+  <link
+    name="left_wheel2_link">
+    <inertial>
+      <origin
+        xyz="-1.20284182059116E-07 7.40127403808799E-12 2.90073330549978E-07"
+        rpy="0 0 0" />
+      <mass
+        value="0.086760267169114" />
+      <inertia
+        ixx="2.54698352974173E-05"
+        ixy="1.42130617032467E-10"
+        ixz="7.40808758172731E-09"
+        iyy="3.80488317802008E-05"
+        iyz="5.89478356885049E-11"
+        izz="2.54550425641342E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/left_wheel2_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/left_wheel2_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="left_wheel2_joint"
+    type="fixed">
+    <origin
+      xyz="-0.0265 0 -0.0395"
+      rpy="0 0.00129839823615998 0" />
+    <parent
+      link="l_wheel2_link" />
+    <child
+      link="left_wheel2_link" />
+    <axis
+      xyz="0 -1 0" />
+  </joint>
+  <link
+    name="torso_lift_link">
+    <inertial>
+      <origin
+        xyz="0.0409090311775983 -0.000698260159682246 -0.0258765557154715"
+        rpy="0 0 0" />
+      <mass
+        value="6.3762771278756" />
+      <inertia
+        ixx="0.012263357497778"
+        ixy="2.00688147950621E-05"
+        ixz="0.000151532355542095"
+        iyy="0.0106756003458638"
+        iyz="-1.14751453206824E-06"
+        izz="0.0121203657273915" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/torso_lift_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/torso_lift_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="torso_lift_joint"
+    type="fixed">
+    <origin
+      xyz="-0.106875442291216 -1.42828144376606E-05 0.417130280560492"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="torso_lift_link" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-0.1"
+      upper="0.6"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="body_link">
+    <inertial>
+      <origin
+        xyz="0.0117686385303164 -0.00077485019077872 0.188689891466574"
+        rpy="0 0 0" />
+      <mass
+        value="5.0880715856155" />
+      <inertia
+        ixx="0.0310576585146269"
+        ixy="-6.40426236252368E-05"
+        ixz="-0.000293448162445969"
+        iyy="0.026864645536454"
+        iyz="-6.32957075559917E-05"
+        izz="0.0195650398453874" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/body_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.890196078431372 0.890196078431372 0.913725490196078 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/body_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="body_joint"
+    type="fixed">
+    <origin
+      xyz="0.162500000024063 0 -0.0359999999987211"
+      rpy="0 0 0" />
+    <parent
+      link="torso_lift_link" />
+    <child
+      link="body_link" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="0"
+      upper="0.61"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="right_tl_robot_link0">
+    <inertial>
+      <origin
+        xyz="0.00192374644250437 -6.92485170161738E-06 0.0385486940392312"
+        rpy="0 0 0" />
+      <mass
+        value="0.716845535665842" />
+      <inertia
+        ixx="0.00154416101417334"
+        ixy="-1.11621426436659E-08"
+        ixz="4.19538312749632E-05"
+        iyy="0.00141876540736504"
+        iyz="8.77246464212948E-10"
+        izz="0.00181390795283312" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/right_tl_robot_link0.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/right_tl_robot_link0.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="right_tl_robot_joint0"
+    type="fixed">
+    <origin
+      xyz="0.0150727614410257 -0.0149999999654346 0.314999999998884"
+      rpy="-1.57079632679446 0 -3.14159265358979" />
+    <parent
+      link="body_link" />
+    <child
+      link="right_tl_robot_link0" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="right_tl_robot_link1">
+    <inertial>
+      <origin
+        xyz="-6.06536260672197E-06 -0.0151213126560721 0.0704991532800994"
+        rpy="0 0 0" />
+      <mass
+        value="0.518526718804213" />
+      <inertia
+        ixx="0.00167109666935009"
+        ixy="1.57717042537927E-07"
+        ixz="-1.53799170137836E-07"
+        iyy="0.00175701058327343"
+        iyz="0.000263609645526818"
+        izz="0.000784474514309351" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/right_tl_robot_link1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/right_tl_robot_link1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="right_tl_robot_joint1"
+    type="revolute">
+    <origin
+      xyz="-0.000927238572212885 0 0.131499999999995"
+      rpy="0 0 0" />
+    <parent
+      link="right_tl_robot_link0" />
+    <child
+      link="right_tl_robot_link1" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-3.14"
+      upper="3.14"
+      effort="10"
+      velocity="10" />
+  </joint>
+  <link
+    name="right_tl_robot_link2">
+    <inertial>
+      <origin
+        xyz="-1.26960580512647E-05 -0.0664217640319343 0.0045783349860955"
+        rpy="0 0 0" />
+      <mass
+        value="0.458838702372525" />
+      <inertia
+        ixx="0.00164318340226464"
+        ixy="-2.72687121461086E-07"
+        ixz="-7.69957161933476E-08"
+        iyy="0.000558837881514008"
+        iyz="-0.000282993845642125"
+        izz="0.00171225909772861" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/right_tl_robot_link2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/right_tl_robot_link2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="right_tl_robot_joint2"
+    type="revolute">
+    <origin
+      xyz="0 0.0159999999988272 0.131500000000007"
+      rpy="-1.57079632679444 0 0" />
+    <parent
+      link="right_tl_robot_link1" />
+    <child
+      link="right_tl_robot_link2" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-2.35619449"
+      upper="2.35619449"
+      effort="10"
+      velocity="10" />
+  </joint>
+  <link
+    name="right_tl_robot_link3">
+    <inertial>
+      <origin
+        xyz="5.33178425365932E-06 0.0166055350939187 0.0826903765904404"
+        rpy="0 0 0" />
+      <mass
+        value="0.463627232587183" />
+      <inertia
+        ixx="0.00162345325371039"
+        ixy="-7.0877843623357E-08"
+        ixz="-2.65531657543152E-07"
+        iyy="0.00168226141881407"
+        iyz="-0.000238494599529547"
+        izz="0.000463821892824167" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/right_tl_robot_link3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.568627450980392 0.596078431372549 0.623529411764706 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/right_tl_robot_link3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="right_tl_robot_joint3"
+    type="revolute">
+    <origin
+      xyz="0 -0.167500000000009 -0.0159999999999649"
+      rpy="1.57079632679491 0 0" />
+    <parent
+      link="right_tl_robot_link2" />
+    <child
+      link="right_tl_robot_link3" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-3.14"
+      upper="3.14"
+      effort="10"
+      velocity="10" />
+  </joint>
+  <link
+    name="right_tl_robot_link4">
+    <inertial>
+      <origin
+        xyz="2.76607595806055E-06 0.0694960785437674 0.00637378741975958"
+        rpy="0 0 0" />
+      <mass
+        value="0.396498504487939" />
+      <inertia
+        ixx="0.0013749737283313"
+        ixy="7.70357106087923E-08"
+        ixz="2.54768454522589E-08"
+        iyy="0.000357925344418066"
+        iyz="0.00021175966786872"
+        izz="0.00141757706980178" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/right_tl_robot_link4.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/right_tl_robot_link4.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="right_tl_robot_joint4"
+    type="revolute">
+    <origin
+      xyz="0 -0.013500000000213 0.153000000000002"
+      rpy="1.57079632679489 0 0" />
+    <parent
+      link="right_tl_robot_link3" />
+    <child
+      link="right_tl_robot_link4" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="-2.35619449"
+      upper="2.35619449"
+      effort="10"
+      velocity="10" />
+  </joint>
+  <link
+    name="right_tl_robot_link5">
+    <inertial>
+      <origin
+        xyz="-3.40926285069543E-06 -0.0133244789571756 0.0587132278005724"
+        rpy="0 0 0" />
+      <mass
+        value="0.244288838305961" />
+      <inertia
+        ixx="0.000507361498650564"
+        ixy="3.14090661307379E-08"
+        ixz="-1.10052154309203E-07"
+        iyy="0.000522024118241343"
+        iyz="8.9412696191389E-05"
+        izz="0.000202971055876174" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/right_tl_robot_link5.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/right_tl_robot_link5.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="right_tl_robot_joint5"
+    type="revolute">
+    <origin
+      xyz="0 0.17449999999996 -0.0135000000000172"
+      rpy="-1.57079632679549 0 0" />
+    <parent
+      link="right_tl_robot_link4" />
+    <child
+      link="right_tl_robot_link5" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-3.14"
+      upper="3.14"
+      effort="10"
+      velocity="10" />
+  </joint>
+  <link
+    name="right_tl_robot_link6">
+    <inertial>
+      <origin
+        xyz="-1.40320353185786E-05 -0.0434236898121723 0.000526798770660086"
+        rpy="0 0 0" />
+      <mass
+        value="0.248665741580466" />
+      <inertia
+        ixx="0.000435366365641092"
+        ixy="1.02578029044756E-07"
+        ixz="3.83958961579293E-08"
+        iyy="0.000223309836077594"
+        iyz="-9.15144352365045E-05"
+        izz="0.000440491062716011" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/right_tl_robot_link6.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.568627450980392 0.596078431372549 0.623529411764706 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/right_tl_robot_link6.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="right_tl_robot_joint6"
+    type="revolute">
+    <origin
+      xyz="0 0.0145000000018278 0.105000000000001"
+      rpy="-1.57079632679431 0 0" />
+    <parent
+      link="right_tl_robot_link5" />
+    <child
+      link="right_tl_robot_link6" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-2.35619449"
+      upper="2.35619449"
+      effort="10"
+      velocity="10" />
+  </joint>
+  <link
+    name="right_tl_robot_link7">
+    <inertial>
+      <origin
+        xyz="-4.26976566042514E-06 -9.34423822174235E-05 0.0269658756305569"
+        rpy="0 0 0" />
+      <mass
+        value="0.217904444638026" />
+      <inertia
+        ixx="0.000132895370549979"
+        ixy="-2.07531992122267E-08"
+        ixz="9.78348685333675E-10"
+        iyy="0.000131821662401355"
+        iyz="6.36865291789532E-09"
+        izz="0.000178910519063227" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/right_tl_robot_link7.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/right_tl_robot_link7.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="right_tl_robot_joint7"
+    type="revolute">
+    <origin
+      xyz="0 -0.114500000000033 -0.0144999999996767"
+      rpy="1.57079632679452 0 0" />
+    <parent
+      link="right_tl_robot_link6" />
+    <child
+      link="right_tl_robot_link7" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-3.14"
+      upper="3.14"
+      effort="10"
+      velocity="10" />
+  </joint>
+  <link
+    name="left_tl_robot_link0">
+    <inertial>
+      <origin
+        xyz="0.00192374642958909 -6.92485170095125E-06 0.0385486940394267"
+        rpy="0 0 0" />
+      <mass
+        value="0.716845535665837" />
+      <inertia
+        ixx="0.00154416101417348"
+        ixy="-1.11621436063746E-08"
+        ixz="4.19538312750026E-05"
+        iyy="0.0014187654073648"
+        iyz="8.77246449852576E-10"
+        izz="0.00181390795283298" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/left_tl_robot_link0.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.698039215686274 0.698039215686274 0.698039215686274 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/left_tl_robot_link0.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="left_tl_robot_joint0"
+    type="fixed">
+    <origin
+      xyz="0.0150727614277847 0.0149999999999999 0.315"
+      rpy="1.5707963267949 0 3.14159265358979" />
+    <parent
+      link="body_link" />
+    <child
+      link="left_tl_robot_link0" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="left_tl_robot_link1">
+    <inertial>
+      <origin
+        xyz="-3.22744538816533E-06 -0.0151241394602863 0.0705018024712039"
+        rpy="0 0 0" />
+      <mass
+        value="0.518479296797124" />
+      <inertia
+        ixx="0.00167109420268885"
+        ixy="1.55942416759266E-07"
+        ixz="-1.54779125210919E-07"
+        iyy="0.0017570055786797"
+        iyz="0.000263610612968579"
+        izz="0.000784478984496201" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/left_tl_robot_link1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/left_tl_robot_link1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="left_tl_robot_joint1"
+    type="revolute">
+    <origin
+      xyz="-0.000927238572212885 0 0.131499999999994"
+      rpy="0 0 0" />
+    <parent
+      link="left_tl_robot_link0" />
+    <child
+      link="left_tl_robot_link1" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-3.14"
+      upper="3.14"
+      effort="10"
+      velocity="10" />
+  </joint>
+  <link
+    name="left_tl_robot_link2">
+    <inertial>
+      <origin
+        xyz="-1.26981341808108E-05 -0.0664217615872392 0.00457834248595579"
+        rpy="0 0 0" />
+      <mass
+        value="0.458838559078682" />
+      <inertia
+        ixx="0.00164318333342256"
+        ixy="-2.72673631358784E-07"
+        ixz="-7.69567017167403E-08"
+        iyy="0.000558837975084229"
+        iyz="-0.000282993807946962"
+        izz="0.00171225917790595" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/left_tl_robot_link2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/left_tl_robot_link2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="left_tl_robot_joint2"
+    type="revolute">
+    <origin
+      xyz="0 0.0159999999988854 0.1315"
+      rpy="-1.57079632679488 0 0" />
+    <parent
+      link="left_tl_robot_link1" />
+    <child
+      link="left_tl_robot_link2" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-2.35619449"
+      upper="2.35619449"
+      effort="10"
+      velocity="10" />
+  </joint>
+  <link
+    name="left_tl_robot_link3">
+    <inertial>
+      <origin
+        xyz="5.34525665640828E-06 0.0166055217931906 0.0826903501113631"
+        rpy="0 0 0" />
+      <mass
+        value="0.463626862441133" />
+      <inertia
+        ixx="0.00162345280531544"
+        ixy="-7.09990185599955E-08"
+        ixz="-2.65595087142102E-07"
+        iyy="0.0016822612104723"
+        iyz="-0.000238494378094532"
+        izz="0.000463821764240809" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/left_tl_robot_link3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.568627450980392 0.596078431372549 0.623529411764706 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/left_tl_robot_link3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="left_tl_robot_joint3"
+    type="revolute">
+    <origin
+      xyz="0 -0.167500000000009 -0.0159999999998925"
+      rpy="1.57079632679491 0 0" />
+    <parent
+      link="left_tl_robot_link2" />
+    <child
+      link="left_tl_robot_link3" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-3.14"
+      upper="3.14"
+      effort="10"
+      velocity="10" />
+  </joint>
+  <link
+    name="left_tl_robot_link4">
+    <inertial>
+      <origin
+        xyz="2.77499371681422E-06 0.0694960701165344 0.00637378176105474"
+        rpy="0 0 0" />
+      <mass
+        value="0.396498467935782" />
+      <inertia
+        ixx="0.00137497369985905"
+        ixy="7.70456070168299E-08"
+        ixz="2.53782058959786E-08"
+        iyy="0.000357925307856412"
+        iyz="0.000211759729780307"
+        izz="0.00141757709378062" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/left_tl_robot_link4.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/left_tl_robot_link4.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="left_tl_robot_joint4"
+    type="revolute">
+    <origin
+      xyz="0 -0.0135000000002568 0.153000000000002"
+      rpy="1.57079632679489 0 0" />
+    <parent
+      link="left_tl_robot_link3" />
+    <child
+      link="left_tl_robot_link4" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="-2.35619449"
+      upper="2.35619449"
+      effort="10"
+      velocity="10" />
+  </joint>
+  <link
+    name="left_tl_robot_link5">
+    <inertial>
+      <origin
+        xyz="-3.40933788461895E-06 -0.0133244789122331 0.0587132278154021"
+        rpy="0 0 0" />
+      <mass
+        value="0.244288838250713" />
+      <inertia
+        ixx="0.000507361499420868"
+        ixy="3.14094198346696E-08"
+        ixz="-1.10052698007247E-07"
+        iyy="0.000522024117410588"
+        iyz="8.94126964824741E-05"
+        izz="0.000202971056177867" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/left_tl_robot_link5.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/left_tl_robot_link5.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="left_tl_robot_joint5"
+    type="revolute">
+    <origin
+      xyz="0 0.174499999999963 -0.0135000000000027"
+      rpy="-1.57079632679493 0 0" />
+    <parent
+      link="left_tl_robot_link4" />
+    <child
+      link="left_tl_robot_link5" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-3.14"
+      upper="3.14"
+      effort="10"
+      velocity="10" />
+  </joint>
+  <link
+    name="left_tl_robot_link6">
+    <inertial>
+      <origin
+        xyz="-1.40320481823997E-05 -0.0434236898124801 0.000526798770638548"
+        rpy="0 0 0" />
+      <mass
+        value="0.248665741580508" />
+      <inertia
+        ixx="0.000435366365641065"
+        ixy="1.02578029235109E-07"
+        ixz="3.83958962041588E-08"
+        iyy="0.000223309836077521"
+        iyz="-9.15144352364949E-05"
+        izz="0.000440491062716001" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/left_tl_robot_link6.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.568627450980392 0.596078431372549 0.623529411764706 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/left_tl_robot_link6.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="left_tl_robot_joint6"
+    type="revolute">
+    <origin
+      xyz="0 0.0145000000019011 0.10499999999999"
+      rpy="-1.57079632679487 0 0" />
+    <parent
+      link="left_tl_robot_link5" />
+    <child
+      link="left_tl_robot_link6" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-2.35619449"
+      upper="2.35619449"
+      effort="10"
+      velocity="10" />
+  </joint>
+  <link
+    name="left_tl_robot_link7">
+    <inertial>
+      <origin
+        xyz="-4.26977886364144E-06 -9.34423823821806E-05 0.0269658756305334"
+        rpy="0 0 0" />
+      <mass
+        value="0.217904444638026" />
+      <inertia
+        ixx="0.000132895370549978"
+        ixy="-2.07531992122101E-08"
+        ixz="9.78348685470837E-10"
+        iyy="0.000131821662401355"
+        iyz="6.36865291789679E-09"
+        izz="0.000178910519063226" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/left_tl_robot_link7.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/left_tl_robot_link7.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="left_tl_robot_joint7"
+    type="revolute">
+    <origin
+      xyz="0 -0.114500000000057 -0.0144999999995405"
+      rpy="1.57079632679452 0 0" />
+    <parent
+      link="left_tl_robot_link6" />
+    <child
+      link="left_tl_robot_link7" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-3.14"
+      upper="3.14"
+      effort="10"
+      velocity="10" />
+  </joint>
+  <link
+    name="head1_link">
+    <inertial>
+      <origin
+        xyz="-0.000110544612671848 0.0119119243556335 0.0301067925619751"
+        rpy="0 0 0" />
+      <mass
+        value="0.23999397328408" />
+      <inertia
+        ixx="0.000200766393248412"
+        ixy="9.97354686190349E-07"
+        ixz="2.25888413561379E-07"
+        iyy="0.000123810810769138"
+        iyz="3.04843733388385E-06"
+        izz="0.000173354729953966" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/head1_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/head1_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="head1_joint"
+    type="fixed">
+    <origin
+      xyz="0.0160000000000082 0 0.439000000001103"
+      rpy="0 0 0" />
+    <parent
+      link="body_link" />
+    <child
+      link="head1_link" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-0.78"
+      upper="0.78"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="head2_link">
+    <inertial>
+      <origin
+        xyz="0.0154454796675373 -0.00213387553601474 0.0748127663343177"
+        rpy="0 0 0" />
+      <mass
+        value="0.409174674371638" />
+      <inertia
+        ixx="0.00127698871749047"
+        ixy="-3.18656524680306E-07"
+        ixz="-1.12537422467823E-05"
+        iyy="0.000725097130503655"
+        iyz="-1.06044440489727E-07"
+        izz="0.000946382031253248" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/head2_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/head2_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="head2_joint"
+    type="fixed">
+    <origin
+      xyz="-0.000309151773435268 0.0020018291209849 0.0474999999999999"
+      rpy="0 0 -0.00580742002106411" />
+    <parent
+      link="head1_link" />
+    <child
+      link="head2_link" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-0.26"
+      upper="0.43"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="head3_link">
+    <inertial>
+      <origin
+        xyz="0.0115023494424462 -0.00298518828511368 -0.00106984495635642"
+        rpy="0 0 0" />
+      <mass
+        value="0.0519216731169617" />
+      <inertia
+        ixx="4.03019084886521E-05"
+        ixy="-1.19828295480724E-06"
+        ixz="-4.50259990749629E-07"
+        iyy="6.85285945251072E-06"
+        iyz="-2.60437994636185E-06"
+        izz="3.87787507032364E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/head3_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://tl_robot_description/meshes/composite_robot/head3_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="head3_joint"
+    type="fixed">
+    <origin
+      xyz="0.0522292280426216 -0.00200000000003878 0.0863448703490786"
+      rpy="0 0 0" />
+    <parent
+      link="head2_link" />
+    <child
+      link="head3_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+</robot>
