@@ -178,4 +178,4 @@ install/
 log/
 
 # caches
-/history
+.history/

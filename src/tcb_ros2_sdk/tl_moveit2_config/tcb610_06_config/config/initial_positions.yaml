@@ -1,9 +1,9 @@
 # Default initial positions for TCB610_06N's ros2_control fake system
 
 initial_positions:
-  tl_robot_joint1: 0
-  tl_robot_joint2: 0
-  tl_robot_joint3: 0
-  tl_robot_joint4: 0
-  tl_robot_joint5: 0
-  tl_robot_joint6: 0
+    tl_robot_joint1: 0
+    tl_robot_joint2: 0
+    tl_robot_joint3: 0
+    tl_robot_joint4: 0
+    tl_robot_joint5: 0
+    tl_robot_joint6: 0

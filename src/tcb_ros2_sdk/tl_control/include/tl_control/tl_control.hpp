@@ -18,21 +18,21 @@
 class TLControlNode : public rclcpp::Node
 {
 public:
-  TLControlNode(const rclcpp::NodeOptions& options = rclcpp::NodeOptions());
-  
+  TLControlNode(const rclcpp::NodeOptions &options = rclcpp::NodeOptions());
+
   // 新增：初始化函数，在节点构造完成后调用
   void initialize();
 
 private:
   /* ---------- callbacks (with arm id) ---------- */
-  void targetPosCallback(const sensor_msgs::msg::JointState::SharedPtr msg, const std::string& arm_id);
-  void targetPoseCallback(const geometry_msgs::msg::PoseStamped::SharedPtr msg, const std::string& arm_id);
-  void cartesianLineCallback(const geometry_msgs::msg::PoseStamped::SharedPtr msg, const std::string& arm_id);
+  void targetPosCallback(const sensor_msgs::msg::JointState::SharedPtr msg, const std::string &arm_id);
+  void targetPoseCallback(const geometry_msgs::msg::PoseStamped::SharedPtr msg, const std::string &arm_id);
+  void cartesianLineCallback(const geometry_msgs::msg::PoseStamped::SharedPtr msg, const std::string &arm_id);
 
   /* ---------- internal ---------- */
-  void initArm(const std::string& arm_id, const std::string& group_name);
-  void createSubscriptionsForArm(const std::string& arm_id);
-  bool isArmReady(const std::string& arm_id) const;
+  void initArm(const std::string &arm_id, const std::string &group_name);
+  void createSubscriptionsForArm(const std::string &arm_id);
+  bool isArmReady(const std::string &arm_id) const;
 
 private:
   /* ---------- ROS subscriptions (per arm) ---------- */
@@ -45,7 +45,7 @@ private:
 
   /* ---------- arm info (per arm) ---------- */
   std::map<std::string, std::vector<std::string>> joint_names_map_;
-  std::map<std::string, std::string> base_frame_map_;  // 仅为兼容保留，不再用于帧检查
+  std::map<std::string, std::string> base_frame_map_; // 仅为兼容保留，不再用于帧检查
 
   /* ---------- TF2 ---------- */
   std::shared_ptr<tf2_ros::Buffer> tf_buffer_;

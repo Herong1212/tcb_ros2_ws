@@ -6,36 +6,27 @@ import os
 
 def generate_launch_description():
 
-    package_name = 'tl_robot_description'
+    package_name = "tl_robot_description"
 
     urdf_path = os.path.join(
-        get_package_share_directory(package_name),
-        'urdf',
-        'TCB610_06N.urdf'
+        get_package_share_directory(package_name), "urdf", "TCB610_06N.urdf"
     )
 
-    with open(urdf_path, 'r') as f:
+    with open(urdf_path, "r") as f:
         robot_description = f.read()
 
     robot_state_publisher_node = Node(
-        package='robot_state_publisher',
-        executable='robot_state_publisher',
-        parameters=[{'robot_description': robot_description}]
+        package="robot_state_publisher",
+        executable="robot_state_publisher",
+        parameters=[{"robot_description": robot_description}],
     )
 
     joint_state_publisher_gui_node = Node(
-        package='joint_state_publisher_gui',
-        executable='joint_state_publisher_gui'
+        package="joint_state_publisher_gui", executable="joint_state_publisher_gui"
     )
 
-    rviz_node = Node(
-        package='rviz2',
-        executable='rviz2',
-        name='rviz2'
-    )
+    rviz_node = Node(package="rviz2", executable="rviz2", name="rviz2")
 
-    return LaunchDescription([
-        joint_state_publisher_gui_node,
-        robot_state_publisher_node,
-        rviz_node
-    ])
+    return LaunchDescription(
+        [joint_state_publisher_gui_node, robot_state_publisher_node, rviz_node]
+    )

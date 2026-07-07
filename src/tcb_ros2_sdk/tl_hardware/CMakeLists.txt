@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.8)
 project(tl_hardware)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-  add_compile_options(-Wall -Wextra -Wpedantic)
+    add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
 # find dependencies
@@ -20,35 +20,35 @@ find_package(trajectory_msgs REQUIRED)
 include_directories(include)
 
 add_library(tl_hardware_interface SHARED
-  src/tl_hardware_interface.cpp
+    src/tl_hardware_interface.cpp
 )
 
 ament_target_dependencies(tl_hardware_interface
-  rclcpp
-  rclcpp_lifecycle
-  pluginlib
-  # urdf
-  hardware_interface
-  # ros2_control
-  # ros2_controllers
-  # joint_state_broadcaster
-  # joint_trajectory_controller
-  # controller_manager
+    rclcpp
+    rclcpp_lifecycle
+    pluginlib
+    # urdf
+    hardware_interface
+    # ros2_control
+    # ros2_controllers
+    # joint_state_broadcaster
+    # joint_trajectory_controller
+    # controller_manager
 )
 
 pluginlib_export_plugin_description_file(hardware_interface tl_hardware_interface.xml
 )
 
 install(TARGETS tl_hardware_interface
-  ARCHIVE DESTINATION lib
-  LIBRARY DESTINATION lib
-  RUNTIME DESTINATION bin
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
+    RUNTIME DESTINATION bin
 )
 install(DIRECTORY include/
-  DESTINATION include
+    DESTINATION include
 )
 install(FILES tl_hardware_interface.xml
-  DESTINATION share/${PROJECT_NAME}
+    DESTINATION share/${PROJECT_NAME}
 )
 
 

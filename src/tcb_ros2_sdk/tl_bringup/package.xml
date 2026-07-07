@@ -1,31 +1,31 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>tl_bringup</name>
-  <version>0.1.0</version>
-  <description>Bringup package for TL robot system</description>
-  <maintainer email="duyukun@fdrobot.com">duyukun</maintainer>
-  <license>Apache License 2.0</license>
+    <name>tl_bringup</name>
+    <version>0.1.0</version>
+    <description>Bringup package for TL robot system</description>
+    <maintainer email="duyukun@fdrobot.com">duyukun</maintainer>
+    <license>Apache License 2.0</license>
 
-  <exec_depend>ros2launch</exec_depend>
-  
-  <!-- 依赖的其他包 -->
-  <exec_depend>tl_driver</exec_depend>
-  <exec_depend>tcb605_05_config</exec_depend>
-  <exec_depend>tcb610_06_config</exec_depend>
-  <exec_depend>tcb705_05_config</exec_depend>
-  <exec_depend>tcb710_06_config</exec_depend>
-  <exec_depend>tl_control</exec_depend>
-  
-  <!-- 如果你需要使用其他ROS2包，添加在这里 -->
-  <exec_depend>rclpy</exec_depend>
-  
-  <test_depend>ament_copyright</test_depend>
-  <test_depend>ament_flake8</test_depend>
-  <test_depend>ament_pep257</test_depend>
-  <test_depend>python3-pytest</test_depend>
+    <exec_depend>ros2launch</exec_depend>
 
-  <export>
-    <build_type>ament_python</build_type>
-  </export>
+    <!-- 依赖的其他包 -->
+    <exec_depend>tl_driver</exec_depend>
+    <exec_depend>tcb605_05_config</exec_depend>
+    <exec_depend>tcb610_06_config</exec_depend>
+    <exec_depend>tcb705_05_config</exec_depend>
+    <exec_depend>tcb710_06_config</exec_depend>
+    <exec_depend>tl_control</exec_depend>
+
+    <!-- 如果你需要使用其他ROS2包，添加在这里 -->
+    <exec_depend>rclpy</exec_depend>
+
+    <test_depend>ament_copyright</test_depend>
+    <test_depend>ament_flake8</test_depend>
+    <test_depend>ament_pep257</test_depend>
+    <test_depend>python3-pytest</test_depend>
+
+    <export>
+        <build_type>ament_python</build_type>
+    </export>
 </package>

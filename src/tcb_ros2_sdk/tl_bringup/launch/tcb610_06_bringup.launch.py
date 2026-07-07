@@ -9,53 +9,52 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
+
 def generate_launch_description():
-    use_rviz = LaunchConfiguration('use_rviz', default='true')
-    
-    tl_driver_dir = get_package_share_directory('tl_driver')
-    tcb710_config_dir = get_package_share_directory('tcb610_06_config')
-    tl_control_dir = get_package_share_directory('tl_control')
-    
+    use_rviz = LaunchConfiguration("use_rviz", default="true")
+
+    tl_driver_dir = get_package_share_directory("tl_driver")
+    tcb710_config_dir = get_package_share_directory("tcb610_06_config")
+    tl_control_dir = get_package_share_directory("tl_control")
 
     tl_driver_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(tl_driver_dir, 'launch', 'tl_driver.launch.py')
+            os.path.join(tl_driver_dir, "launch", "tl_driver.launch.py")
         )
     )
-    
+
     # 延迟2秒启动demo
     tcb610_06_demo_launch = TimerAction(
         period=2.0,
         actions=[
             IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(
-                    os.path.join(tcb710_config_dir, 'launch', 'demo.launch.py')
+                    os.path.join(tcb710_config_dir, "launch", "demo.launch.py")
                 ),
-                launch_arguments={'use_rviz': use_rviz}.items()
+                launch_arguments={"use_rviz": use_rviz}.items(),
             )
-        ]
+        ],
     )
-    
+
     # 再延迟2秒启动control
     tl_control_launch = TimerAction(
         period=4.0,
         actions=[
             IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(
-                    os.path.join(tl_control_dir, 'launch', 'tl_control.launch.py')
+                    os.path.join(tl_control_dir, "launch", "tl_control.launch.py")
                 )
             )
+        ],
+    )
+
+    return LaunchDescription(
+        [
+            DeclareLaunchArgument(
+                "use_rviz", default_value="true", description="是否启动RViz"
+            ),
+            tl_driver_launch,
+            tcb610_06_demo_launch,
+            tl_control_launch,
         ]
     )
-    
-    return LaunchDescription([
-        DeclareLaunchArgument(
-            'use_rviz',
-            default_value='true',
-            description='是否启动RViz'
-        ),
-        
-        tl_driver_launch,
-        tcb610_06_demo_launch,
-        tl_control_launch,
-    ])

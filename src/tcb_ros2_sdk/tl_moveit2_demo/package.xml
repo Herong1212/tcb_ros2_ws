@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+    <name>tl_moveit2_demo</name>
+    <version>0.1.0</version>
+    <description>MoveIt2 运动规划演示包，面向 TCB610_06N 机械臂，演示关节空间规划、笛卡尔直线规划及规划场景障碍物操作。</description>
+
+    <maintainer email="duyukun@fdrobot.com">tlibot</maintainer>
+    <license>Apache-2.0</license>
+
+    <buildtool_depend>ament_cmake</buildtool_depend>
+
+    <depend>rclcpp</depend>
+    <depend>geometry_msgs</depend>
+    <depend>moveit_ros_planning_interface</depend>
+    <depend>moveit_visual_tools</depend>
+    <depend>tf2_ros</depend>
+    <depend>tf2_geometry_msgs</depend>
+
+    <exec_depend>moveit_ros_move_group</exec_depend>
+    <exec_depend>tcb610_06_config</exec_depend>
+
+    <export>
+        <build_type>ament_cmake</build_type>
+    </export>
+</package>

@@ -1,7 +1,8 @@
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import JointState
-#from control_msgs.action import FollowJointTrajectory
+
+# from control_msgs.action import FollowJointTrajectory
 from trajectory_msgs.msg import JointTrajectory
 from std_msgs.msg import String
 from std_msgs.msg import Int32
@@ -15,6 +16,7 @@ from scipy.spatial.transform import Rotation as R
 import threading
 import queue
 
+
 def _load_sdk(version: int):
     if version == 2403:
         from sdk.TCB_SDK_2403.robotarm_sdk import RobotArmSDK
@@ -26,14 +28,16 @@ def _load_sdk(version: int):
         raise ValueError(f"Unsupported sdk version: {version}")
     return RobotArmSDK, RobotArmFunction
 
+
 class ArmDriver:
     """单个机械臂的运行时控制对象（各自线程/缓冲区/到位判断）"""
+
     def __init__(
         self,
         node: Node,
         *,
-        arm_key: str,              # 'armleft' / 'armright'
-        joint_prefix: str,         # '' / 'left_' / 'right_'
+        arm_key: str,  # 'armleft' / 'armright'
+        joint_prefix: str,  # '' / 'left_' / 'right_'
         ip: str,
         port_6001: int,
         port_7000: int,
@@ -43,8 +47,8 @@ class ArmDriver:
         stride: int,
         arm_control_mode: str,
         speed: float,
-        position_tolerance: float,   # radians
-        velocity_tolerance: float,   # radians/s
+        position_tolerance: float,  # radians
+        velocity_tolerance: float,  # radians/s
         settle_time: float,
         servo_j_frequency: float,
         log_level: int,
@@ -70,14 +74,20 @@ class ArmDriver:
 
         RobotArmSDK, RobotArmFunction = _load_sdk(self.sdk_version)
 
-        self.sdk_6001 = RobotArmSDK(self.ip, self.port_6001, log_level=log_level, color_log=False)
-        self.sdk_7000 = RobotArmSDK(self.ip, self.port_7000, log_level=log_level, color_log=False)
+        self.sdk_6001 = RobotArmSDK(
+            self.ip, self.port_6001, log_level=log_level, color_log=False
+        )
+        self.sdk_7000 = RobotArmSDK(
+            self.ip, self.port_7000, log_level=log_level, color_log=False
+        )
         self.robotfuc = RobotArmFunction(color_log=False)
 
         self.sdk_6001.connect()
         self.sdk_7000.connect()
 
-        self.joint_names: List[str] = [f"{self.joint_prefix}tl_robot_joint{i+1}" for i in range(self.dof)]
+        self.joint_names: List[str] = [
+            f"{self.joint_prefix}tl_robot_joint{i+1}" for i in range(self.dof)
+        ]
 
         self.motion_complete_publisher: Optional[rclpy.publisher.Publisher] = None
         if is_dual:
@@ -87,20 +97,21 @@ class ArmDriver:
             ready_msg = String()
             ready_msg.data = "ready"
             self.motion_complete_publisher.publish(ready_msg)
-            
-        end_pose_topic = "/tl_driver/end_pose" if self.joint_prefix == "" else f"/tl_driver/{self.arm_key}/end_pose"
+
+        end_pose_topic = (
+            "/tl_driver/end_pose"
+            if self.joint_prefix == ""
+            else f"/tl_driver/{self.arm_key}/end_pose"
+        )
         self.end_pose_publisher = node.create_publisher(PoseStamped, end_pose_topic, 10)
-        
+
         if is_dual:
             speed_topic = f"tl_driver/{self.arm_key}/set_speed"
         else:
             speed_topic = "tl_driver/set_speed"
 
         self.speed_subscriber = node.create_subscription(
-            Int32,
-            speed_topic,
-            self.speed_callback,
-            10
+            Int32, speed_topic, self.speed_callback, 10
         )
 
         # 状态
@@ -129,51 +140,67 @@ class ArmDriver:
         self.settled_since = 0.0
         self.move_status = "ready"
 
-        self.motion_start_time = 0.0          # 新增：最近一次运动开始时间戳
-        self.motion_guard_time = 0.3          # 新增：保护时间，可参数化
+        self.motion_start_time = 0.0  # 新增：最近一次运动开始时间戳
+        self.motion_guard_time = 0.3  # 新增：保护时间，可参数化
         self.received_trajectory_length = 0
 
         self.running = True
-        self.trajectory_thread = threading.Thread(target=self._trajectory_processor, daemon=True)
+        self.trajectory_thread = threading.Thread(
+            target=self._trajectory_processor, daemon=True
+        )
         self.trajectory_thread.start()
 
         self.servo_j_thread: Optional[threading.Thread] = None
         if self.arm_control_mode == "servo_j":
-            self.servo_j_thread = threading.Thread(target=self._servo_j_processor, daemon=True)
+            self.servo_j_thread = threading.Thread(
+                target=self._servo_j_processor, daemon=True
+            )
             self.servo_j_thread.start()
 
-        self.logger.info(f"{self.arm_key} initialized, ip={self.ip}, mode={self.arm_control_mode}")
+        self.logger.info(
+            f"{self.arm_key} initialized, ip={self.ip}, mode={self.arm_control_mode}"
+        )
 
     def speed_callback(self, msg: Int32) -> None:
         try:
             new_speed = int(msg.data)
-            
+
             # 验证速度值范围 (1-100)
             if new_speed < 1:
-                self.logger.warn(f"{self.arm_key} 设置速度失败：速度值 {new_speed} 必须大于0")
+                self.logger.warn(
+                    f"{self.arm_key} 设置速度失败：速度值 {new_speed} 必须大于0"
+                )
                 return
             if new_speed > 100:
-                self.logger.warn(f"{self.arm_key} 设置速度失败：速度值 {new_speed} 不能超过100")
+                self.logger.warn(
+                    f"{self.arm_key} 设置速度失败：速度值 {new_speed} 不能超过100"
+                )
                 return
-            
+
             old_speed = self.speed
             self.speed = new_speed
-            
+
             # 更新SDK中的速度设置（仅适用于queue和motion_control模式）
             if self.arm_control_mode in ["queue", "motion_control"]:
                 try:
                     with self.move_lock:
                         self.sdk_6001.speed_set(self.speed)
-                    self.logger.info(f"{self.arm_key} 速度已从 {old_speed}% 更新为 {self.speed}%")
+                    self.logger.info(
+                        f"{self.arm_key} 速度已从 {old_speed}% 更新为 {self.speed}%"
+                    )
                 except Exception as e:
                     self.logger.error(f"{self.arm_key} SDK速度设置失败: {e}")
                     self.speed = old_speed  # 恢复原速度
             elif self.arm_control_mode == "servo_j":
                 # servo_j模式的速度参数在open_servo_j时设置，需要特殊处理
-                self.logger.info(f"{self.arm_key} servo_j模式速度已记录为 {self.speed}%，但需重新上电生效")
+                self.logger.info(
+                    f"{self.arm_key} servo_j模式速度已记录为 {self.speed}%，但需重新上电生效"
+                )
             else:
-                self.logger.warn(f"{self.arm_key} 未知的控制模式 {self.arm_control_mode}，速度设置无效")
-                
+                self.logger.warn(
+                    f"{self.arm_key} 未知的控制模式 {self.arm_control_mode}，速度设置无效"
+                )
+
         except ValueError as e:
             self.logger.error(f"{self.arm_key} 设置速度失败：无效的速度值 '{msg.data}'")
         except Exception as e:
@@ -188,7 +215,9 @@ class ArmDriver:
         msg.data = status
         self.motion_complete_publisher.publish(msg)
 
-    def enqueue_trajectory_points_deg(self, points_deg: List[List[float]], now: float) -> None:
+    def enqueue_trajectory_points_deg(
+        self, points_deg: List[List[float]], now: float
+    ) -> None:
         with self.buffer_lock:
             self.last_trajectory_time = now
             self.trajectory_buffer.extend(points_deg)
@@ -212,7 +241,10 @@ class ArmDriver:
                 points_to_send: List[List[float]] = []
                 with self.buffer_lock:
                     time_since_last = current_time - self.last_trajectory_time
-                    if self.trajectory_buffer and time_since_last >= self.trajectory_timeout:
+                    if (
+                        self.trajectory_buffer
+                        and time_since_last >= self.trajectory_timeout
+                    ):
                         points_to_send = self.trajectory_buffer.copy()
                         self.trajectory_buffer.clear()
 
@@ -227,10 +259,12 @@ class ArmDriver:
 
                 self.received_trajectory_length = len(points_to_send)
 
-                self.logger.info(f"{self.arm_key} 轨迹结束, 发送 {self.received_trajectory_length} 个点, {points_to_send}")
+                self.logger.info(
+                    f"{self.arm_key} 轨迹结束, 发送 {self.received_trajectory_length} 个点, {points_to_send}"
+                )
                 ok = self._execute_points(points_to_send)
                 if ok:
-                    self.motion_start_time = current_time    # 记录运动开始时刻
+                    self.motion_start_time = current_time  # 记录运动开始时刻
                     self._publish_motion("moving")
                 else:
                     # 下发失败则不进入 moving 状态
@@ -244,7 +278,9 @@ class ArmDriver:
                 traceback.print_exc()
 
     def _servo_j_processor(self):
-        send_interval = 1.0 / self.servo_j_frequency if self.servo_j_frequency > 0 else 0.01
+        send_interval = (
+            1.0 / self.servo_j_frequency if self.servo_j_frequency > 0 else 0.01
+        )
         while self.running:
             try:
                 try:
@@ -276,7 +312,9 @@ class ArmDriver:
         lock_acquired = False
         try:
             if not self.move_lock.acquire(blocking=True, timeout=0.5):
-                self.logger.debug(f"{self.arm_key} Previous motion running, skipping...")
+                self.logger.debug(
+                    f"{self.arm_key} Previous motion running, skipping..."
+                )
                 return False
             lock_acquired = True
 
@@ -289,11 +327,15 @@ class ArmDriver:
                 sampled_points = points_deg
 
             if self.arm_control_mode == "queue":
-                self.sdk_6001.directmotion_insert_instrvec(sampled_points, acc=100, dec=100, pl=5)
+                self.sdk_6001.directmotion_insert_instrvec(
+                    sampled_points, acc=100, dec=100, pl=5
+                )
             elif self.arm_control_mode == "motion_control":
                 self.sdk_7000.motion_control(sampled_points)
             else:
-                self.logger.warn(f"{self.arm_key} unsupported arm_control_mode={self.arm_control_mode}")
+                self.logger.warn(
+                    f"{self.arm_key} unsupported arm_control_mode={self.arm_control_mode}"
+                )
                 return False
             return True
 
@@ -343,15 +385,18 @@ class ArmDriver:
     def matrix_to_xyz_and_quaternion(self, matrix):
         translation = matrix[:3, 3].tolist()
         rotation = matrix[:3, :3]
-        r = R.from_matrix(rotation) 
-        quat = r.as_quat()     # 返回 [x, y, z, w] 格式的四元数
+        r = R.from_matrix(rotation)
+        quat = r.as_quat()  # 返回 [x, y, z, w] 格式的四元数
         # quat = np.roll(quat,1) # 返回 [w, x, y, z] 格式的四元数
         return translation, quat.tolist()
 
     def _publish_end_pose(self) -> None:
         if self.current_position_xyz is None or self.current_orientation_quat is None:
             return
-        if len(self.current_position_xyz) != 3 or len(self.current_orientation_quat) != 4:
+        if (
+            len(self.current_position_xyz) != 3
+            or len(self.current_orientation_quat) != 4
+        ):
             return
         msg = PoseStamped()
         msg.header.stamp = self.node.get_clock().now().to_msg()
@@ -364,7 +409,7 @@ class ArmDriver:
         msg.pose.orientation.z = float(self.current_orientation_quat[2])
         msg.pose.orientation.w = float(self.current_orientation_quat[3])
         self.end_pose_publisher.publish(msg)
-    
+
     def update_joint_state(self) -> None:
         try:
             if self.sdk_version == 2403:
@@ -378,9 +423,13 @@ class ArmDriver:
 
             self.current_position = [math.radians(p) for p in self.pos[: self.dof]]
             self.current_velocity = [math.radians(p) for p in axisActualVel[: self.dof]]
-            self.current_effort   = [float(t) / 1000 if t is not None else 0.0 for t in torq[: self.dof]]
+            self.current_effort = [
+                float(t) / 1000 if t is not None else 0.0 for t in torq[: self.dof]
+            ]
             self.T_current = self.robotfuc.kinematics.fkine(self.pos)
-            self.current_position_xyz, self.current_orientation_quat = self.matrix_to_xyz_and_quaternion(self.T_current)
+            self.current_position_xyz, self.current_orientation_quat = (
+                self.matrix_to_xyz_and_quaternion(self.T_current)
+            )
             self._publish_end_pose()
         except Exception as e:
             self.logger.warn(f"{self.arm_key} update_joint_state 错误: {e}")
@@ -401,7 +450,10 @@ class ArmDriver:
             position_ok = True
             velocity_ok = True
             for i in range(min(len(self.current_position), len(self.target_position))):
-                if abs(self.current_position[i] - self.target_position[i]) > self.position_tolerance:
+                if (
+                    abs(self.current_position[i] - self.target_position[i])
+                    > self.position_tolerance
+                ):
                     position_ok = False
                 if abs(self.current_velocity[i]) > self.velocity_tolerance:
                     velocity_ok = False
@@ -418,10 +470,16 @@ class ArmDriver:
             return
 
         # servo_j 到位判断
-        if not self.servo_j_motion_active or self.current_position is None or self.current_velocity is None:
+        if (
+            not self.servo_j_motion_active
+            or self.current_position is None
+            or self.current_velocity is None
+        ):
             return
         idle_time = current_time - self.servo_j_last_send_time
-        idle_ok = idle_time > max(self.servo_j_idle_timeout, 2.0 / max(self.servo_j_frequency, 1e-3))
+        idle_ok = idle_time > max(
+            self.servo_j_idle_timeout, 2.0 / max(self.servo_j_frequency, 1e-3)
+        )
         if not idle_ok:
             return
         if self.servo_j_last_position is None:
@@ -429,10 +487,13 @@ class ArmDriver:
             self.servo_j_settled_since = 0.0
             return
         pos_stable = all(
-            abs(self.current_position[i] - self.servo_j_last_position[i]) <= self.position_tolerance
+            abs(self.current_position[i] - self.servo_j_last_position[i])
+            <= self.position_tolerance
             for i in range(len(self.current_position))
         )
-        vel_stable = all(abs(v) <= self.velocity_tolerance for v in self.current_velocity)
+        vel_stable = all(
+            abs(v) <= self.velocity_tolerance for v in self.current_velocity
+        )
         if pos_stable and vel_stable:
             if self.servo_j_settled_since == 0.0:
                 self.servo_j_settled_since = current_time
@@ -465,87 +526,109 @@ class ArmDriver:
 
 class TLDriver(Node):
     def __init__(self):
-        super().__init__('tl_driver')
+        super().__init__("tl_driver")
         # 以下参数修改 tl_driver_config.yaml 文件生效
-        self.declare_parameter('arm_mode', 'single')         # single: 单臂控制; dual: 双臂控制
-        self.declare_parameter('frequency', 100)             # 发布关节数据的频率
-        self.declare_parameter('debug_logging', False)       # 根据参数设置日志级别
+        self.declare_parameter("arm_mode", "single")  # single: 单臂控制; dual: 双臂控制
+        self.declare_parameter("frequency", 100)  # 发布关节数据的频率
+        self.declare_parameter("debug_logging", False)  # 根据参数设置日志级别
 
         # 端口
-        self.declare_parameter('port_6001', 6001)
-        self.declare_parameter('port_7000', 7000)
+        self.declare_parameter("port_6001", 6001)
+        self.declare_parameter("port_7000", 7000)
 
         # 单臂控制下的手臂(双臂下表示左臂)
-        self.declare_parameter('ip1', '192.168.2.13')       # 机械臂IP地址
-        self.declare_parameter('sdk_version1', 2403)         # 2403 or 2207 版本通讯协议
-        self.declare_parameter('dof1', 7)                    # 自由度, TCB605_05、TCB610_06的自由度为6, TCB705_05、TCB710_06的自由度为7
-        self.declare_parameter('trajectory_timeout1', 0.5)   # 轨迹结束超时时间(秒)
-        self.declare_parameter('stride1', 1)                 # "queue" or "motion_control" 模式下的采样步长
-        self.declare_parameter('arm_control_mode1', 'queue') # "queue" or "motion_control" or "servo_j"
-                                                             # "queue"（队列运动） or "motion_control"（7000端口运动控制）为离线控制， "servo_j"为在线控制
-        self.declare_parameter('speed1', 60)                 # "queue" or "motion_control" 模式下的运动全局速度
-        self.declare_parameter('position_tolerance1', 2.0)   # 到位判断位置容差(度)
-        self.declare_parameter('velocity_tolerance1', 1.0)   # 到位判断速度容差(度/秒)
-        self.declare_parameter('settle_time1', 0.1)          # 到位判断稳定时间(秒)
-        self.declare_parameter('servo_j_frequency1', 100)    # servo_j 模式发送频率(Hz)（以及接收轨迹的频率）
+        self.declare_parameter("ip1", "192.168.2.13")  # 机械臂IP地址
+        self.declare_parameter("sdk_version1", 2403)  # 2403 or 2207 版本通讯协议
+        self.declare_parameter(
+            "dof1", 7
+        )  # 自由度, TCB605_05、TCB610_06的自由度为6, TCB705_05、TCB710_06的自由度为7
+        self.declare_parameter("trajectory_timeout1", 0.5)  # 轨迹结束超时时间(秒)
+        self.declare_parameter(
+            "stride1", 1
+        )  # "queue" or "motion_control" 模式下的采样步长
+        self.declare_parameter(
+            "arm_control_mode1", "queue"
+        )  # "queue" or "motion_control" or "servo_j"
+        # "queue"（队列运动） or "motion_control"（7000端口运动控制）为离线控制， "servo_j"为在线控制
+        self.declare_parameter(
+            "speed1", 60
+        )  # "queue" or "motion_control" 模式下的运动全局速度
+        self.declare_parameter("position_tolerance1", 2.0)  # 到位判断位置容差(度)
+        self.declare_parameter("velocity_tolerance1", 1.0)  # 到位判断速度容差(度/秒)
+        self.declare_parameter("settle_time1", 0.1)  # 到位判断稳定时间(秒)
+        self.declare_parameter(
+            "servo_j_frequency1", 100
+        )  # servo_j 模式发送频率(Hz)（以及接收轨迹的频率）
 
         # 双臂控制下的另一条手臂(双臂下表示右臂)
-        self.declare_parameter('ip2', '192.168.2.14') 
-        self.declare_parameter('sdk_version2', 2403)
-        self.declare_parameter('dof2', 7)
-        self.declare_parameter('trajectory_timeout2', 0.5)
-        self.declare_parameter('stride2', 1)
-        self.declare_parameter('arm_control_mode2', 'queue')
-        self.declare_parameter('speed2', 60)
-        self.declare_parameter('position_tolerance2', 2.0)
-        self.declare_parameter('velocity_tolerance2', 1.0)
-        self.declare_parameter('settle_time2', 0.1)
-        self.declare_parameter('servo_j_frequency2', 100)
+        self.declare_parameter("ip2", "192.168.2.14")
+        self.declare_parameter("sdk_version2", 2403)
+        self.declare_parameter("dof2", 7)
+        self.declare_parameter("trajectory_timeout2", 0.5)
+        self.declare_parameter("stride2", 1)
+        self.declare_parameter("arm_control_mode2", "queue")
+        self.declare_parameter("speed2", 60)
+        self.declare_parameter("position_tolerance2", 2.0)
+        self.declare_parameter("velocity_tolerance2", 1.0)
+        self.declare_parameter("settle_time2", 0.1)
+        self.declare_parameter("servo_j_frequency2", 100)
 
-        self.arm_mode = self.get_parameter('arm_mode').value
-        self.frequency = self.get_parameter('frequency').value
-        self.debug_logging = self.get_parameter('debug_logging').value
+        self.arm_mode = self.get_parameter("arm_mode").value
+        self.frequency = self.get_parameter("frequency").value
+        self.debug_logging = self.get_parameter("debug_logging").value
 
-        self.port_6001 = self.get_parameter('port_6001').value
-        self.port_7000 = self.get_parameter('port_7000').value
+        self.port_6001 = self.get_parameter("port_6001").value
+        self.port_7000 = self.get_parameter("port_7000").value
 
-        self.ip1 = self.get_parameter('ip1').value
-        self.sdk_version1 = self.get_parameter('sdk_version1').value
-        self.dof1 = self.get_parameter('dof1').value
-        self.trajectory_timeout1 = self.get_parameter('trajectory_timeout1').value
-        self.stride1 = self.get_parameter('stride1').value
-        self.arm_control_mode1 = self.get_parameter('arm_control_mode1').value
-        self.speed1 = self.get_parameter('speed1').value
-        self.position_tolerance1 = math.radians(self.get_parameter('position_tolerance1').value)
-        self.velocity_tolerance1 = math.radians(self.get_parameter('velocity_tolerance1').value)
-        self.settle_time1 = self.get_parameter('settle_time1').value
-        self.servo_j_frequency1 = self.get_parameter('servo_j_frequency1').value
+        self.ip1 = self.get_parameter("ip1").value
+        self.sdk_version1 = self.get_parameter("sdk_version1").value
+        self.dof1 = self.get_parameter("dof1").value
+        self.trajectory_timeout1 = self.get_parameter("trajectory_timeout1").value
+        self.stride1 = self.get_parameter("stride1").value
+        self.arm_control_mode1 = self.get_parameter("arm_control_mode1").value
+        self.speed1 = self.get_parameter("speed1").value
+        self.position_tolerance1 = math.radians(
+            self.get_parameter("position_tolerance1").value
+        )
+        self.velocity_tolerance1 = math.radians(
+            self.get_parameter("velocity_tolerance1").value
+        )
+        self.settle_time1 = self.get_parameter("settle_time1").value
+        self.servo_j_frequency1 = self.get_parameter("servo_j_frequency1").value
 
-        self.ip2 = self.get_parameter('ip2').value
-        self.sdk_version2 = self.get_parameter('sdk_version2').value
-        self.dof2 = self.get_parameter('dof2').value
-        self.trajectory_timeout2 = self.get_parameter('trajectory_timeout2').value
-        self.stride2 = self.get_parameter('stride2').value
-        self.arm_control_mode2 = self.get_parameter('arm_control_mode2').value
-        self.speed2 = self.get_parameter('speed2').value
-        self.position_tolerance2 = math.radians(self.get_parameter('position_tolerance2').value)
-        self.velocity_tolerance2 = math.radians(self.get_parameter('velocity_tolerance2').value)
-        self.settle_time2 = self.get_parameter('settle_time2').value
-        self.servo_j_frequency2 = self.get_parameter('servo_j_frequency2').value
-        
+        self.ip2 = self.get_parameter("ip2").value
+        self.sdk_version2 = self.get_parameter("sdk_version2").value
+        self.dof2 = self.get_parameter("dof2").value
+        self.trajectory_timeout2 = self.get_parameter("trajectory_timeout2").value
+        self.stride2 = self.get_parameter("stride2").value
+        self.arm_control_mode2 = self.get_parameter("arm_control_mode2").value
+        self.speed2 = self.get_parameter("speed2").value
+        self.position_tolerance2 = math.radians(
+            self.get_parameter("position_tolerance2").value
+        )
+        self.velocity_tolerance2 = math.radians(
+            self.get_parameter("velocity_tolerance2").value
+        )
+        self.settle_time2 = self.get_parameter("settle_time2").value
+        self.servo_j_frequency2 = self.get_parameter("servo_j_frequency2").value
+
         if self.debug_logging:
             self.get_logger().set_level(rclpy.logging.LoggingSeverity.DEBUG)
             self.get_logger().info("调试日志已启用")
-            log_level=1
+            log_level = 1
         else:
-            log_level=0
+            log_level = 0
 
-        self.joint_state_publisher = self.create_publisher(JointState, 'tl_driver/current_joint_states', 10)
+        self.joint_state_publisher = self.create_publisher(
+            JointState, "tl_driver/current_joint_states", 10
+        )
 
         # 单臂模式保持原 topic
         self.motion_complete_publisher = None
         if self.arm_mode != "dual":
-            self.motion_complete_publisher = self.create_publisher(String, 'tl_driver/motion_complete', 10)
+            self.motion_complete_publisher = self.create_publisher(
+                String, "tl_driver/motion_complete", 10
+            )
             complete_msg = String()
             complete_msg.data = "ready"
             self.motion_complete_publisher.publish(complete_msg)
@@ -553,17 +636,11 @@ class TLDriver(Node):
             self._single_last_motion_status = complete_msg.data
 
         self.trajectory_subscriber = self.create_subscription(
-            JointTrajectory,
-            'tl_driver/joint_trajectory',
-            self.trajectory_callback,
-            10
+            JointTrajectory, "tl_driver/joint_trajectory", self.trajectory_callback, 10
         )
 
         self.robot_cmd_subscriber = self.create_subscription(
-            String,
-            'tl_driver/cmd',
-            self.robot_cmd_callback,
-            10
+            String, "tl_driver/cmd", self.robot_cmd_callback, 10
         )
 
         self.timer = self.create_timer(1 / self.frequency, self.publish_joint_status)
@@ -571,10 +648,10 @@ class TLDriver(Node):
         # 创建左右臂 driver（single 时只创建左臂, 且 joint_prefix 为空以保持兼容）
         self.arms: Dict[str, ArmDriver] = {}
 
-        left_prefix = '' if self.arm_mode != 'dual' else 'left_'
-        self.arms['armleft'] = ArmDriver(
+        left_prefix = "" if self.arm_mode != "dual" else "left_"
+        self.arms["armleft"] = ArmDriver(
             self,
-            arm_key='armleft',
+            arm_key="armleft",
             joint_prefix=left_prefix,
             ip=self.ip1,
             port_6001=self.port_6001,
@@ -590,14 +667,14 @@ class TLDriver(Node):
             settle_time=self.settle_time1,
             servo_j_frequency=self.servo_j_frequency1,
             log_level=log_level,
-            is_dual=(self.arm_mode == 'dual'),
+            is_dual=(self.arm_mode == "dual"),
         )
 
-        if self.arm_mode == 'dual':
-            self.arms['armright'] = ArmDriver(
+        if self.arm_mode == "dual":
+            self.arms["armright"] = ArmDriver(
                 self,
-                arm_key='armright',
-                joint_prefix='right_',
+                arm_key="armright",
+                joint_prefix="right_",
                 ip=self.ip2,
                 port_6001=self.port_6001,
                 port_7000=self.port_7000,
@@ -612,7 +689,7 @@ class TLDriver(Node):
                 settle_time=self.settle_time2,
                 servo_j_frequency=self.servo_j_frequency2,
                 log_level=log_level,
-                is_dual=(self.arm_mode == 'dual'),
+                is_dual=(self.arm_mode == "dual"),
             )
 
         self.get_logger().info(f"TLDriver initialized, arm_mode={self.arm_mode}")
@@ -622,12 +699,14 @@ class TLDriver(Node):
             now = time.time()
 
             # single：严格依赖 joint_names 进行映射
-            if self.arm_mode == 'single':
+            if self.arm_mode == "single":
                 if not msg.joint_names:
-                    self.get_logger().error("single 模式下 JointTrajectory 缺少 joint_names, 忽略该轨迹")
+                    self.get_logger().error(
+                        "single 模式下 JointTrajectory 缺少 joint_names, 忽略该轨迹"
+                    )
                     return
 
-                left = self.arms['armleft']
+                left = self.arms["armleft"]
                 idx_map = {name: i for i, name in enumerate(msg.joint_names)}
 
                 # 允许两种命名：tl_robot_joint* 或 left_tl_robot_joint*
@@ -655,7 +734,9 @@ class TLDriver(Node):
                         continue
                     positions = pt.positions
                     if max(index_list) >= len(positions):
-                        self.get_logger().error("single 模式下 JointTrajectory 点的 positions 数量不足, 忽略该轨迹")
+                        self.get_logger().error(
+                            "single 模式下 JointTrajectory 点的 positions 数量不足, 忽略该轨迹"
+                        )
                         return
                     degs = [round(math.degrees(positions[i]), 4) for i in index_list]
 
@@ -673,18 +754,22 @@ class TLDriver(Node):
 
             # dual：按 joint_names 拆分左右臂
             if not msg.joint_names:
-                self.get_logger().error("dual 模式下 JointTrajectory 缺少 joint_names, 忽略该轨迹")
+                self.get_logger().error(
+                    "dual 模式下 JointTrajectory 缺少 joint_names, 忽略该轨迹"
+                )
                 return
 
             idx_map = {name: i for i, name in enumerate(msg.joint_names)}
-            left = self.arms.get('armleft')
-            right = self.arms.get('armright')
+            left = self.arms.get("armleft")
+            right = self.arms.get("armright")
             if left is None or right is None:
                 return
 
             # 先检查左右臂的所有关节是否都在 joint_names 中
             missing_left: List[str] = [j for j in left.joint_names if j not in idx_map]
-            missing_right: List[str] = [j for j in right.joint_names if j not in idx_map]
+            missing_right: List[str] = [
+                j for j in right.joint_names if j not in idx_map
+            ]
             if missing_left or missing_right:
                 if missing_left:
                     self.get_logger().error(
@@ -707,7 +792,9 @@ class TLDriver(Node):
                     continue
                 positions = pt.positions
                 if max(left_indices + right_indices) >= len(positions):
-                    self.get_logger().error("dual 模式下 JointTrajectory 点的 positions 数量不足, 忽略该轨迹")
+                    self.get_logger().error(
+                        "dual 模式下 JointTrajectory 点的 positions 数量不足, 忽略该轨迹"
+                    )
                     return
 
                 # 依 joint_names 严格取值
@@ -734,34 +821,46 @@ class TLDriver(Node):
             else:
                 if right_points_deg:
                     right.enqueue_trajectory_points_deg(right_points_deg, now)
-            
+
         except Exception as e:
             self.get_logger().error(f"trajectory_callback 错误: {e}")
             traceback.print_exc()
-    
+
     def robot_cmd_callback(self, msg):
         try:
             cmd = msg.data
             self.get_logger().info(f"接收到机械臂控制命令: {cmd}")
-            
+
             # 单臂模式
-            if self.arm_mode != 'dual':
-                if cmd == "arm_power_on" or cmd == "armleft_power_on" or cmd == "armright_power_on":
-                    self.arms['armleft'].power_on()
+            if self.arm_mode != "dual":
+                if (
+                    cmd == "arm_power_on"
+                    or cmd == "armleft_power_on"
+                    or cmd == "armright_power_on"
+                ):
+                    self.arms["armleft"].power_on()
                     self.get_logger().info("单臂上电完成")
-                elif cmd == "arm_power_off" or cmd == "armleft_power_off" or cmd == "armright_power_off":
-                    self.arms['armleft'].power_off()
+                elif (
+                    cmd == "arm_power_off"
+                    or cmd == "armleft_power_off"
+                    or cmd == "armright_power_off"
+                ):
+                    self.arms["armleft"].power_off()
                     self.get_logger().info("单臂下电完成")
                 else:
                     self.get_logger().warn(f"单臂模式下不支持的命令: {cmd}")
                 return
-            
+
             # 双臂模式
             if cmd == "arm_power_on":
                 # 双臂同时上电
                 if "armleft" in self.arms and "armright" in self.arms:
-                    t1 = threading.Thread(target=self.arms["armleft"].power_on, daemon=True)
-                    t2 = threading.Thread(target=self.arms["armright"].power_on, daemon=True)
+                    t1 = threading.Thread(
+                        target=self.arms["armleft"].power_on, daemon=True
+                    )
+                    t2 = threading.Thread(
+                        target=self.arms["armright"].power_on, daemon=True
+                    )
                     t1.start()
                     t2.start()
                     t1.join()
@@ -770,8 +869,12 @@ class TLDriver(Node):
             elif cmd == "arm_power_off":
                 # 双臂同时下电
                 if "armleft" in self.arms and "armright" in self.arms:
-                    t1 = threading.Thread(target=self.arms["armleft"].power_off, daemon=True)
-                    t2 = threading.Thread(target=self.arms["armright"].power_off, daemon=True)
+                    t1 = threading.Thread(
+                        target=self.arms["armleft"].power_off, daemon=True
+                    )
+                    t2 = threading.Thread(
+                        target=self.arms["armright"].power_off, daemon=True
+                    )
                     t1.start()
                     t2.start()
                     t1.join()
@@ -799,7 +902,7 @@ class TLDriver(Node):
                     self.get_logger().info("右臂下电完成")
             else:
                 self.get_logger().warn(f"未知命令: {cmd}")
-                
+
         except Exception as e:
             self.get_logger().error(f"robot_cmd_callback 错误: {e}")
             traceback.print_exc()
@@ -817,8 +920,8 @@ class TLDriver(Node):
             vel: List[float] = []
             eff: List[float] = []
 
-            if self.arm_mode != 'dual':
-                arm = self.arms['armleft']
+            if self.arm_mode != "dual":
+                arm = self.arms["armleft"]
                 arm.update_joint_state()
                 if arm.current_position is None:
                     return
@@ -841,8 +944,8 @@ class TLDriver(Node):
                         self._single_last_motion_status = status
 
             else:
-                left = self.arms['armleft']
-                right = self.arms['armright']
+                left = self.arms["armleft"]
+                right = self.arms["armright"]
                 left.update_joint_state()
                 right.update_joint_state()
                 if left.current_position is None or right.current_position is None:
@@ -850,8 +953,12 @@ class TLDriver(Node):
 
                 names = left.joint_names + right.joint_names
                 pos = left.current_position + right.current_position
-                vel = (left.current_velocity or [0.0] * left.dof) + (right.current_velocity or [0.0] * right.dof)
-                eff = (left.current_effort or [0.0] * left.dof) + (right.current_effort or [0.0] * right.dof)
+                vel = (left.current_velocity or [0.0] * left.dof) + (
+                    right.current_velocity or [0.0] * right.dof
+                )
+                eff = (left.current_effort or [0.0] * left.dof) + (
+                    right.current_effort or [0.0] * right.dof
+                )
 
                 left.check_arrival_and_publish(current_time)
                 right.check_arrival_and_publish(current_time)
@@ -869,9 +976,10 @@ class TLDriver(Node):
         try:
             for arm in self.arms.values():
                 arm.shutdown()
-            
+
         except Exception as e:
             self.get_logger().error(f"Cleanup error: {e}")
+
 
 def main(args=None):
     rclpy.init(args=args)
@@ -889,5 +997,6 @@ def main(args=None):
             except Exception as e:
                 pass
 
-if __name__ == '__main__': 
+
+if __name__ == "__main__":
     main()

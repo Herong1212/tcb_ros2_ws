@@ -29,22 +29,24 @@ class TestCommand(CommandExtension):
         """Add arguments to argparse."""
         launch_testing.launch_test.add_arguments(parser)
         parser.add_argument(
-            '--disable-isolation', action='store_true', default=False,
-            help='Disable automatic ROS_DOMAIN_ID isolation.'
-            'If ROS_DOMAIN_ID is already set, ros2 test will respect and use it. If it is not'
-            ' set, a ROS_DOMAIN_ID not being used by another ros2 test will be chosen '
-            'unless isolation is disabled.'
+            "--disable-isolation",
+            action="store_true",
+            default=False,
+            help="Disable automatic ROS_DOMAIN_ID isolation."
+            "If ROS_DOMAIN_ID is already set, ros2 test will respect and use it. If it is not"
+            " set, a ROS_DOMAIN_ID not being used by another ros2 test will be chosen "
+            "unless isolation is disabled.",
         )
 
     def main(self, *, parser, args):
         """Entry point for CLI program."""
         with contextlib.ExitStack() as stack:
-            if 'ROS_DOMAIN_ID' not in os.environ and not args.disable_isolation:
+            if "ROS_DOMAIN_ID" not in os.environ and not args.disable_isolation:
                 domain_id = stack.enter_context(domain_coordinator.domain_id())
-                print('Running with ROS_DOMAIN_ID {}'.format(domain_id))
-                os.environ['ROS_DOMAIN_ID'] = str(domain_id)
-            if 'ROS_DOMAIN_ID' in os.environ:
-                print('ROS_DOMAIN_ID', os.environ['ROS_DOMAIN_ID'])
+                print("Running with ROS_DOMAIN_ID {}".format(domain_id))
+                os.environ["ROS_DOMAIN_ID"] = str(domain_id)
+            if "ROS_DOMAIN_ID" in os.environ:
+                print("ROS_DOMAIN_ID", os.environ["ROS_DOMAIN_ID"])
             return launch_testing.launch_test.run(
                 parser, args, test_runner_cls=launch_testing_ros.LaunchTestRunner
             )
