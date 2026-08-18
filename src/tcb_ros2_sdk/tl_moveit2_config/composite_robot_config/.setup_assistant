@@ -1,0 +1,25 @@
+moveit_setup_assistant_config:
+  urdf:
+    package: tl_robot_description
+    relative_path: urdf/fujqr04_urdf.urdf
+  srdf:
+    relative_path: config/fujqr04_urdf.srdf
+  package_settings:
+    author_name: duyukun
+    author_email: duyukun@fdrobot.com
+    generated_timestamp: 1770711580
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity
+  modified_urdf:
+    xacros:
+      - control_xacro
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity

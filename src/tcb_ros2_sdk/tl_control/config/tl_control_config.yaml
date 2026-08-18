@@ -1,0 +1,9 @@
+tl_control:
+  ros__parameters:
+    arm_mode: "single"   # 双臂: "dual" 或 单臂: "single"
+    planning_groups:
+      # 单臂时, 名称包括tcb605_05_group、tcb610_06_group、tcb705_05_group、tcb710_06_group
+      single: "tcb710_06_group"       
+      # 双臂             
+      left:   "armleft_group"                # 双臂时左臂规划组
+      right:  "armright_group"               # 双臂时右臂规划组

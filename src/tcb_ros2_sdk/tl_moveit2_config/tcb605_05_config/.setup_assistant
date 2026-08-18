@@ -1,0 +1,10 @@
+moveit_setup_assistant_config:
+  urdf:
+    package: tl_robot_description
+    relative_path: urdf/TCB605_05N.urdf
+  srdf:
+    relative_path: config/TCB605_05N.srdf
+  package_settings:
+    author_name: tlibot
+    author_email: duyukun@fdrobot.com
+    generated_timestamp: 1768892848

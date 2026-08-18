@@ -1,0 +1,25 @@
+moveit_setup_assistant_config:
+  urdf:
+    package: tl_robot_description
+    relative_path: urdf/TCB705_05N.urdf
+  srdf:
+    relative_path: config/TCB705_05N.srdf
+  package_settings:
+    author_name: tlibot
+    author_email: duyukun@fdrobot.com
+    generated_timestamp: 1768893137
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity
+  modified_urdf:
+    xacros:
+      - control_xacro
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity

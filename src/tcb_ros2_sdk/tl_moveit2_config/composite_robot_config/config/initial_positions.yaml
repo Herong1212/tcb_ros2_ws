@@ -1,0 +1,17 @@
+# Default initial positions for fujqr04_urdf's ros2_control fake system
+
+initial_positions:
+  left_tl_robot_joint1: 0
+  left_tl_robot_joint2: 0
+  left_tl_robot_joint3: 0
+  left_tl_robot_joint4: 0
+  left_tl_robot_joint5: 0
+  left_tl_robot_joint6: 0
+  left_tl_robot_joint7: 0
+  right_tl_robot_joint1: 0
+  right_tl_robot_joint2: 0
+  right_tl_robot_joint3: 0
+  right_tl_robot_joint4: 0
+  right_tl_robot_joint5: 0
+  right_tl_robot_joint6: 0
+  right_tl_robot_joint7: 0

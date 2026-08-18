@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="TCB610_06N">
+    <xacro:arg name="initial_positions_file" default="initial_positions.yaml" />
+
+    <!-- Import TCB610_06N urdf file -->
+    <xacro:include filename="$(find tl_robot_description)/urdf/TCB610_06N.urdf" />
+
+    <!-- Import control_xacro -->
+    <xacro:include filename="TCB610_06N.ros2_control.xacro" />
+
+
+    <xacro:TCB610_06N_ros2_control name="TLHardware" initial_positions_file="$(arg initial_positions_file)"/>
+
+</robot>

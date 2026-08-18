@@ -1,0 +1,36 @@
+tl_driver:
+  ros__parameters:
+    arm_mode: "dual"            # single: 单臂控制; dual: 双臂控制
+    frequency: 100                # 发布关节数据的频率
+    debug_logging: false          # 根据参数设置日志级别
+
+    # 端口
+    port_6001: 6001
+    port_7000: 7000
+
+    # 单臂控制下的手臂(双臂下表示左臂)
+    ip1: "192.168.2.13"           # 机械臂IP地址
+    sdk_version1: 2207            # 2403 or 2207 版本通讯协议
+    dof1: 7                       # 自由度，TCB605_05、TCB610_06的自由度为6，TCB705_05、TCB710_06的自由度为7
+    trajectory_timeout1: 0.1      # 轨迹结束超时时间(秒)
+    stride1: 1                   # "queue" or "motion_control" 模式下的采样步长
+    arm_control_mode1: "motion_control"  # "queue" or "motion_control" or "servo_j"；
+                                  # "queue"（队列运动） or "motion_control"（7000端口运动控制）为离线控制， "servo_j"为在线控制
+    speed1: 30                    # "queue" or "motion_control" 模式下的运动全局速度
+    position_tolerance1: 0.5      # 到位判断位置容差（度）
+    velocity_tolerance1: 0.5      # 到位判断速度容差（度/秒）
+    settle_time1: 0.1             # 到位判断稳定时间（秒）
+    servo_j_frequency1: 100       # servo_j 模式发送频率(Hz)（以及接收轨迹的频率）
+
+    # 双臂控制下的另一条手臂(双臂下表示右臂)
+    ip2: "192.168.2.14" 
+    sdk_version2: 2207
+    dof1: 7
+    trajectory_timeout2: 0.1
+    stride2: 1
+    arm_control_mode2: "motion_control"
+    speed2: 30
+    position_tolerance2: 0.5
+    velocity_tolerance2: 0.5
+    settle_time2: 0.1
+    servo_j_frequency2: 100
