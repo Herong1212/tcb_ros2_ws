@@ -1,0 +1,57 @@
+# ROS 2 / colcon 构建产物
+/build/
+/install/
+/log/
+/.colcon/
+
+# CMake 生成文件（仅限工作空间根目录）
+/CMakeCache.txt
+/CMakeFiles/
+/cmake_install.cmake
+/compile_commands.json
+
+# Python 缓存、测试与覆盖率产物
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+
+# Python 虚拟环境与本地环境变量
+.venv/
+venv/
+env/
+.env
+.env.*
+!.env.example
+
+# ROS 运行时文件
+/.ros/
+rosbag2_*/
+*.db3
+*.mcap
+
+# 编辑器与 IDE
+/.vscode/
+/.idea/
+*.code-workspace
+*.swp
+*.swo
+*~
+.history
+
+# 操作系统生成文件
+.DS_Store
+Thumbs.db
+
+# 临时文件
+*.tmp
+*.temp
+*.bak
+*.orig
+*.rej
