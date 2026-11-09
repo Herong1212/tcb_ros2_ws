@@ -9,14 +9,19 @@
                 <!-- NOTE tl_hardware/TlHardwareInterface 为实际的硬件接口 -->
                 <!-- <plugin>tl_hardware/TlHardwareInterface</plugin> -->
 
+                <!-- * 表示使用关节位置控制，例如给关节一个目标角度，单位为弧度 -->
                 <!-- 目前只有位置控制 -->
-                <!-- <param name="control_mode">position</param> -->
+                <param name="control_mode">position</param>
 
+                <!-- * 表示使用谁发送的目标，它决定硬件接口从哪个来源获取关节目标 -->
                 <!-- 可选: external 或 controller 或 auto -->
-                <!-- <param name="trajectory_mode">auto</param> -->
+                <!--    1、controller：表示使用 ros2_control 控制器输出，例如 MoveIt 执行轨迹时经关节轨迹控制器产生的命令 -->
+                <!--    2、external：表示使用 /teleop/target_position 话题发送的外部关节目标 -->
+                <!--    3、auto：在上述两种来源之间自动切换，优先使用有效的外部目标 -->
+                <param name="trajectory_mode">auto</param>
 
                 <!-- NOTE mock_components/GenericSystem 为虚拟的接口 -->
-                <plugin>mock_components/GenericSystem</plugin>
+                <!-- <plugin>mock_components/GenericSystem</plugin> -->
             </hardware>
             <joint name="tl_robot_joint1">
                 <command_interface name="position"/>

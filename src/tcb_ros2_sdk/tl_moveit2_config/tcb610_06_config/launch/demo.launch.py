@@ -1,5 +1,4 @@
 from moveit_configs_utils import MoveItConfigsBuilder
-# from moveit2.moveit_configs_utils import MoveItConfigsBuilder
 # from moveit2.moveit_configs_utils.moveit_configs_utils import MoveItConfigsBuilder
  
 from moveit_configs_utils.launches import generate_demo_launch
