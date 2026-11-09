@@ -7,7 +7,7 @@
             <hardware>
                 <!-- By default, set up controllers for simulation. This won't work on real hardware -->
                 <!-- NOTE tl_hardware/TlHardwareInterface 为实际的硬件接口 -->
-                <!-- <plugin>tl_hardware/TlHardwareInterface</plugin> -->
+                <plugin>tl_hardware/TlHardwareInterface</plugin>
 
                 <!-- * 表示使用关节位置控制，例如给关节一个目标角度，单位为弧度 -->
                 <!-- 目前只有位置控制 -->
